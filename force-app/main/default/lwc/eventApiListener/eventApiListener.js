@@ -19,9 +19,11 @@ export default class EventApiListener extends LightningElement {
 
     handleSubscribe() {
         let that = this;
-        const messageCallback = function(response) {
+
+        const messageCallback = (response) => {
             console.log('New message received: ', JSON.stringify(response));
-            let obj = JSON.parse(response);
+            const objStr = JSON.stringify(response);
+            const obj = JSON.parse(objStr);
             let myTitle = 'New Event';
             let myMessage = obj.data.payload.My_Value__c;
             that.showToast(myTitle, myMessage);
@@ -59,12 +61,5 @@ export default class EventApiListener extends LightningElement {
             message: toastMessage
         });
         this.dispatchEvent(event);
-    }
-
-    testToast() {
-        let title = 'Today is Thursday';
-        let message = 'The current time is 9:31am';
-        
-        this.showToast(title, message);
     }
 }
