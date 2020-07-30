@@ -1,4 +1,5 @@
 import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lightning/empApi';
 
 export default class EventApiListener extends LightningElement {
@@ -17,8 +18,13 @@ export default class EventApiListener extends LightningElement {
     }
 
     handleSubscribe() {
+        let that = this;
         const messageCallback = function(response) {
             console.log('New message received: ', JSON.stringify(response));
+            let obj = JSON.parse(response);
+            let myTitle = 'New Event';
+            let myMessage = obj.data.payload.My_Value__c;
+            that.showToast(myTitle, myMessage);
         };
 
         subscribe(this.channelName, -1, messageCallback).then(response => {
@@ -45,5 +51,20 @@ export default class EventApiListener extends LightningElement {
         onError(error => {
             console.log('Recieved error from server: ', JSON.stringify(error));
         });
+    }
+
+    showToast(toastTitle, toastMessage) {
+        const event = new ShowToastEvent({
+            title: toastTitle,
+            message: toastMessage
+        });
+        this.dispatchEvent(event);
+    }
+
+    testToast() {
+        let title = 'Today is Thursday';
+        let message = 'The current time is 9:31am';
+        
+        this.showToast(title, message);
     }
 }
