@@ -29,7 +29,8 @@ export default class EventApiListener extends LightningElement {
             let myMessage = obj.data.payload.My_Value__c;
             let myId = that.events.length + 1;
             let newEvent = [{id: myId, value: myMessage}];
-            that.events = that.events.concat(newEvent);
+            let bumper = newEvent.concat(that.events);
+            that.events = bumper;
             that.showToast(myTitle, myMessage);
         };
 
