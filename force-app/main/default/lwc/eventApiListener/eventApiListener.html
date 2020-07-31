@@ -11,5 +11,10 @@
                 onclick={handleUnsubscribe} disabled={isUnsubscribeDisabled}
                 class="slds-m-left_x-small"></lightning-button>
         </div>
+        <div class="slds-m-around_medium">
+            <template for:each={getEvents} for:item="event">
+                <p class="slds-m-around_small" key={event.id}>{event.value}</p>
+            </template>
+        </div>
     </lightning-card>
 </template>

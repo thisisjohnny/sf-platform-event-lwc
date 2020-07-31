@@ -8,6 +8,7 @@ export default class EventApiListener extends LightningElement {
     isUnsubscribeDisabled = !this.isSubscribeDisabled;
 
     subscription = {};
+    events = [];
 
     handleChannelName(event) {
         this.channelName = event.target.value;
@@ -26,6 +27,9 @@ export default class EventApiListener extends LightningElement {
             const obj = JSON.parse(objStr);
             let myTitle = 'New Event';
             let myMessage = obj.data.payload.My_Value__c;
+            let myId = that.events.length + 1;
+            let newEvent = [{id: myId, value: myMessage}];
+            that.events = that.events.concat(newEvent);
             that.showToast(myTitle, myMessage);
         };
 
@@ -61,5 +65,9 @@ export default class EventApiListener extends LightningElement {
             message: toastMessage
         });
         this.dispatchEvent(event);
+    }
+
+    get getEvents() {
+        return this.events;
     }
 }
